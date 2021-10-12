@@ -25,7 +25,7 @@ def main():
 
     # fair dispath: basic_qos
     channel.basic_qos(prefetch_count=1)
-    channel.basic_consume(queue='hello',
+    channel.basic_consume(queue='task_queue',
                           # auto_ack: redeliver if not consumed
                           # auto_ack=True, # no message acknowledgment with True
                           on_message_callback=callback)
