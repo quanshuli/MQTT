@@ -12,7 +12,7 @@ channel.queue_declare(queue='task_queue',
 message = ' '.join(sys.argv[1:]) or 'Hello World!'
 
 channel.basic_publish(exchange='',
-                      routing_key='hello',
+                      routing_key='task_queue',
                       body=message,
                       prroperties=pika.BasicProperties(
                           delivery_mode=2, # make message persistent
