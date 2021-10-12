@@ -1,3 +1,6 @@
+'''
+use exchange_declare
+'''
 import pika, sys
 #from pika import exchange_type
 
