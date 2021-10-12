@@ -18,8 +18,13 @@ def main():
         # delays for each dot in body
         time.sleep(body.count(b'.'))
         print(' [x] Done')
+        # release memory basic_ack, important!
+        # debug: 
+        # rabbitmqctl.bat list_queues name messages_ready messages_unacknowledged
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
+    # fair dispath: basic_qos
+    channel.basic_qos(prefetch_count=1)
     channel.basic_consume(queue='hello',
                           # auto_ack: redeliver if not consumed
                           # auto_ack=True, # no message acknowledgment with True

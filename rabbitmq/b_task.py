@@ -13,7 +13,10 @@ message = ' '.join(sys.argv[1:]) or 'Hello World!'
 
 channel.basic_publish(exchange='',
                       routing_key='hello',
-                      body=message)
+                      body=message,
+                      prroperties=pika.BasicProperties(
+                          delivery_mode=2, # make message persistent
+                      ))
 print(' [x] Sent %r ' % message)
 
 connection.close()
