@@ -6,8 +6,6 @@ import paho.mqtt.client as mqtt
 import random
 import time
 from datetime import datetime
-# try to use json for timestamp info 
-# but datetime.datetime is not json serializable 
 import json 
  
 mqttBroker = 'mqtt.eclipseprojects.io'
@@ -20,17 +18,18 @@ while True:
     now = datetime.now().isoformat()
     MQTT_MSG = json.dumps({'TIME_STAMP': now,
                            'NUMBER': rand_int})
-  
-    #print(rand_int)
-    #publish.single('paho/test/single', hostname="localhost", port=1883)
     client.publish('RANDOM_NUMBER', MQTT_MSG)
-    #client.publish('RANDOM_NUMBER', rand_int)
-    #print('Published ' + str(rand_int) + ', topic RANDOM_NUMBER')
     print(MQTT_MSG)
     time.sleep(1)
 
 
+    
 
+
+#print(rand_int)
+#publish.single('paho/test/single', hostname="localhost", port=1883)
+#client.publish('RANDOM_NUMBER', rand_int)
+#print('Published ' + str(rand_int) + ', topic RANDOM_NUMBER')
 '''
 import rabbitpy
 creates a queue named mqtt-messages,  
