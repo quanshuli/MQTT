@@ -5,6 +5,7 @@ def main():
     channel = connection.channel()
 
     # if queue running no need to declare queue
+    # A queue is a buffer that stores messages.
     channel.queue_declare(queue='hello')
 
     def callback(ch, method, properties, body):
