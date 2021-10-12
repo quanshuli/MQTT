@@ -5,12 +5,12 @@ import paho.mqtt.client as mqtt
 import time
 import json
 
-print('1')
+#print('1')
 def on_message(client, userdata, message):
-    m_decode = str(message.payload.decode('utf-8'))
     #print('received: ', m_decode)
     #print('2')
     #print('received: ', str(message.payload.decode('utf-8')))
+    m_decode = str(message.payload.decode('utf-8'))
     m_json = json.loads(m_decode)
     print(m_json)
 
