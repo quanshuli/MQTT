@@ -20,10 +20,10 @@ while True:
     MQTT_MSG = json.dumps({'TIME_STAMP': now,
                            'NUMBER': rand_int})
 
-    client.publish('amp.topic', MQTT_MSG)
+    client.publish('Number_Topic', MQTT_MSG)
 
     print(MQTT_MSG)
-    
+
     time.sleep(1)
 
 

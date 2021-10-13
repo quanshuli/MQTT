@@ -1,5 +1,5 @@
 '''
-broker: 'mqtt.eclipseprojects.io'
+local host working with mosquitto
 '''
 import paho.mqtt.client as mqtt
 import time
@@ -11,20 +11,16 @@ def on_message(client, userdata, message):
     print(m_json)
 
 mqttBroker = 'localhost'
+#mqttBroker = 'mqtt.eclipseprojects.io'
 
-client = mqtt.Client('WebApp')
+client = mqtt.Client('receiver')
 client.connect(mqttBroker, 1883)
 
 client.loop_start()
 
-client.subscribe('Number_Topic')
+client.subscribe('amq.topic')
 
 client.on_message=on_message
 
 time.sleep(30)
 client.loop_stop()
-
-'''import socket
-client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_name = 'localhost'
-port_number = 1883'''

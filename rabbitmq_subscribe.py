@@ -13,9 +13,7 @@ mqttClientId = 'Numbers'
 # set up the credentials same as mqtt publisher
 user_pwd = pika.PlainCredentials(mqttUser, mqttPassword)
 
-# define exchange info
-exchangeTopic = 'amq.topic'
-exchangeType = 'topic'
+
 
 # set up connections in rabbitmq
 connection = pika.BlockingConnection(
@@ -24,6 +22,10 @@ connection = pika.BlockingConnection(
         #credentials=user_pwd
     ))
 channel = connection.channel()
+
+# define exchange info
+exchangeTopic = 'amq.topic'
+exchangeType = 'topic'
 
 # declare exchange info
 channel.exchange_declare(

@@ -10,7 +10,8 @@ mqttBrokerHost = '127.0.0.1'
 mqttBrokerPort = 1883
 mqttUser = 'guest'
 mqttPassword = 'guest'
-mqttTopic = 'generated_numbers'
+#mqttTopic = 'generated_numbers'
+mqttTopic = 'amq.topic'
 mqttClientId = 'Numbers'
 
 mqtt_client = mqtt.Client(mqttClientId)
