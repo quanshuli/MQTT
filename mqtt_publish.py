@@ -14,7 +14,9 @@ mqttTopic = 'generated_numbers'
 mqttClientId = 'Numbers'
 
 mqtt_client = mqtt.Client(mqttClientId)
+mqtt_client.username_pw_set(mqttUser, mqttPassword)
 mqtt_client.connect(mqttBrokerHost, mqttBrokerPort)
+
 
 while True:
     rand_int = random.randint(1, 100)

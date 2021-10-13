@@ -16,10 +16,14 @@ client.connect(mqttBroker, 1883)
 while True:
     rand_int = random.randint(1, 100)
     now = datetime.now().isoformat()
+
     MQTT_MSG = json.dumps({'TIME_STAMP': now,
                            'NUMBER': rand_int})
+
     client.publish('amp.topic', MQTT_MSG)
+
     print(MQTT_MSG)
+    
     time.sleep(1)
 
 
