@@ -1,24 +1,27 @@
 '''
-broker: 'mqtt.eclipseprojects.io'
+mqtt through rabbitmq
 '''
 #import paho.mqtt.publish as publish
 import paho.mqtt.client as mqtt
-import random
-import time
+import random, time, json
 from datetime import datetime
-import json 
  
-mqttBroker = 'localhost'
+mqttBrokerHost = '127.0.0.1'
+mqttBrokerPort = 1883
+mqttUser = 'guest'
+mqttPassword = 'guest'
+mqttTopic = 'generated_numbers'
+mqttClientId = 'Numbers'
 
-client = mqtt.Client('Numbers')
-client.connect(mqttBroker, 1883)
+mqtt_client = mqtt.Client(mqttClientId)
+mqtt_client.connect(mqttBrokerHost, mqttBrokerPort)
 
 while True:
     rand_int = random.randint(1, 100)
     now = datetime.now().isoformat()
     MQTT_MSG = json.dumps({'TIME_STAMP': now,
                            'NUMBER': rand_int})
-    client.publish('amp.topic', MQTT_MSG)
+    mqtt_client.publish(mqttTopic, MQTT_MSG)
     print(MQTT_MSG)
     time.sleep(1)
 

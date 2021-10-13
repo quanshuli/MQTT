@@ -10,14 +10,14 @@ def on_message(client, userdata, message):
     m_json = json.loads(m_decode)
     print(m_json)
 
-mqttBroker = 'mqtt.eclipseprojects.io'
+mqttBroker = 'localhost'
 
 client = mqtt.Client('WebApp')
-client.connect(mqttBroker)
+client.connect(mqttBroker, 1883)
 
 client.loop_start()
 
-client.subscribe('RANDOM_NUMBER')
+client.subscribe('amp.topic')
 
 client.on_message=on_message
 
