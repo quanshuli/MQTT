@@ -1,5 +1,5 @@
 '''
-broker: 'mqtt.eclipseprojects.io'
+broker='mqtt.eclipseprojects.io'
 '''
 import paho.mqtt.client as mqtt
 import time
@@ -10,7 +10,8 @@ def on_message(client, userdata, message):
     m_json = json.loads(m_decode)
     print(m_json)
 
-mqttBroker = 'localhost'
+mqttBroker = 'localhost' # working with mosquitto default conf. not when listen 1883 or mqtt protocal is explicitly set
+#mqttBroker ='mqtt.eclipseprojects.io'
 
 client = mqtt.Client('WebApp')
 client.connect(mqttBroker, 1883)

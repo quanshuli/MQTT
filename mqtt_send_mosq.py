@@ -7,12 +7,14 @@ import random
 import time
 from datetime import datetime
 import json 
- 
+
+port=1883 # working
+#port=9001 # not working with mosquitto conf portal websocket
 mqttBroker = 'localhost'
 #mqttBroker = 'mqtt.eclipseprojects.io'
 
 client = mqtt.Client('publisher')
-client.connect(mqttBroker, 1883)
+client.connect(mqttBroker, port)
 
 while True:
     rand_int = random.randint(1, 100)

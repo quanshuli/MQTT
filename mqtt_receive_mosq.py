@@ -5,6 +5,8 @@ import paho.mqtt.client as mqtt
 import time
 import json
 
+port=1883 # working with conf setting portal: mqtt
+#port=9001
 def on_message(client, userdata, message):
     m_decode = str(message.payload.decode('utf-8'))
     m_json = json.loads(m_decode)
@@ -14,7 +16,7 @@ mqttBroker = 'localhost'
 #mqttBroker = 'mqtt.eclipseprojects.io'
 
 client = mqtt.Client('receiver')
-client.connect(mqttBroker, 1883)
+client.connect(mqttBroker, port)
 
 client.loop_start()
 
