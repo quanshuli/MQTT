@@ -1,5 +1,5 @@
 '''
-web socket send numbers
+   using web socket to send numbers
 '''
 import paho.mqtt.client as mqtt
 import random
@@ -28,7 +28,7 @@ while True:
    #now = datetime.utcnow().isoformat() # utc time
    now = datetime.utcnow().microsecond # utc time with microsecond only
    #now = datetime.now(timezone.utc).isoformat() # aware time object
-   
+
    msg = json.dumps({'UTC_TIME_MICROSEC': now,
                      'NUMBER': rand_int})
    client.publish(sub_topic,msg)    #publish
