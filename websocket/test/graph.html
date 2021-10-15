@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<!--
+    use paho.mqtt.js to receive data from paho.mqtt python through mosquitto
+-->
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="js/canvasjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+<script>
+    //
+    // script to receive data
+    //
+	// Create a client instance
+	client = new Paho.MQTT.Client("192.168.0.11", Number(9001),'clientID');
+	client.startTrace();
+
+	// set callback handlers
+	client.onConnectionLost = onConnectionLost;
+	client.onMessageArrived = onMessageArrived;
+
+	// connect the client
+	client.connect({onSuccess:onConnect});
+	console.log("attempting to connect...");
+
+	// called when the client connects
+	function onConnect() {
+	  // Once a connection has been made, make a subscription and send a message.
+	  console.log("onConnect");
+	  client.subscribe("test");
+      //
+      // test
+      //
+	  // self sending text:
+	  //message = new Paho.MQTT.Message("Hello");
+	  //message.destinationName = "World";
+	  // client.send(message);
+      //
+	}
+
+	// called when the client loses its connection
+	function onConnectionLost(responseObject) {
+	  if (responseObject.errorCode !== 0) {
+		console.log("onConnectionLost:"+responseObject.errorMessage);
+	  }
+	}
+
+	// called when a message arrives
+	function onMessageArrived(message) {
+		let payload = message.payloadString;
+		let json_obj = JSON.parse(payload);
+		var receivedNumber = json_obj.NUMBER;
+		var receivedTime = json_obj.UTC_TIME_MICROSEC;
+
+        // display received info 
+	  	console.log("onMessageArrived:"+receivedNumber);
+
+        
+        
+    }
+</script>
+<script>
+    //
+    // display the chart
+    //
+    window.onload = function(receivedNumber) {
+
+        var dataPoints = [];
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2",
+            title: {
+                text: "Numbers"
+            },
+            data: [{
+                type: "column",
+                dataPoints: dataPoints
+            }]
+        });
+
+        // Initial Values
+        chart.render();
+        var xValue = 0;
+        var yValue = receivedNumber;
+        var updateInterval = 1000;
+        var newDataCount = 6;
+
+        var updateChart = function(){
+            dataPoints.push({x:xValue, y:yValue});
+            xValue++;
+            if (dataPoints.length > 10 ){dataPoints.shift();}
+            chart.render()
+        };
+            
+        setInterval(function(){
+            updateChart()}, updateInterval); 
+
+    }
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;">
+    
+</div>
+
+</body>
+</html>
