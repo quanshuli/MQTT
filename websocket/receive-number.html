@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<!--
+    use paho.mqtt.js to receive data from paho.mqtt python through mosquitto
+-->
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="js/canvasjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
+<script>
+    //
+    // script to receive data
+    //
+	// set up chart
+    window.onload = function() {
+
+        var dataPoints = [];
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2",
+            title: {
+                text: "Numbers Received"
+            },
+            axisX: {
+                title: "UTC Time: Microseconds"
+            },
+            axisY: {
+                maximum: 100,
+                minimum: 0,
+                interval: 10,
+                title: "Numbers"
+            },
+            data: [{
+                type: "column",
+                dataPoints: dataPoints
+            }]
+        });
+        chart.render();
+        //
+
+        // Create a client instance
+        client = new Paho.MQTT.Client("192.168.0.11", Number(9001),'clientID');
+        client.startTrace();
+
+        // set callback handlers
+        client.onConnectionLost = onConnectionLost;
+        client.onMessageArrived = onMessageArrived;
+
+        // connect the client
+        client.connect({onSuccess:onConnect});
+        console.log("attempting to connect...");
+
+        // called when the client connects
+        function onConnect() {
+        // Once a connection has been made, make a subscription and send a message.
+        console.log("onConnect");
+        client.subscribe("test");
+        //
+        // test
+        //
+        // self sending text:
+        //message = new Paho.MQTT.Message("Hello");
+        //message.destinationName = "World";
+        // client.send(message);
+        //
+        }
+
+        // called when the client loses its connection
+        function onConnectionLost(responseObject) {
+        if (responseObject.errorCode !== 0) {
+            console.log("onConnectionLost:"+responseObject.errorMessage);
+        }
+        }
+
+        // called when a message arrives
+        function onMessageArrived(message) {
+            let payload = message.payloadString;
+            let json_obj = JSON.parse(payload);
+            var receivedNumber = json_obj.NUMBER;
+            var receivedTime = json_obj.UTC_TIME_MICROSEC;
+
+            // display received info 
+            console.log("onMessageArrived:"+receivedNumber);
+            
+            // update chart
+            chart.options.data[0].dataPoints.push({y:receivedNumber,label:receivedTime})
+            chart.render()
+
+        }
+    }
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+</body>
+</html>
