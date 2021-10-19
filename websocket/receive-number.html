@@ -6,21 +6,23 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script src="js/canvasjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
 <script>
     //
     // script to receive data
     //
-	// set up chart
+	
     window.onload = function() {
 
-        var dataPoints = [];
+        // define data points for chart
+        let dataPoints = [];
+        let dataPoints1 = [];
 
+        // set up chart
         var chart = new CanvasJS.Chart("chartContainer", {
             theme: "light2",
             title: {
-                text: "Numbers Received"
+                text: "Numbers Received - History Chart"
             },
             axisX: {
                 title: "UTC Time: Microseconds"
@@ -37,7 +39,27 @@
             }]
         });
         chart.render();
-        //
+        // set up chart1
+        var chart1 = new CanvasJS.Chart("chartContainer1", {
+            theme: "light2",
+            title: {
+                text: "Numbers Received - Flow Chart"
+            },
+            axisX: {
+                title: "UTC Time: Microseconds"
+            },
+            axisY: {
+                maximum: 110,
+                minimum: -10,
+                interval: 10,
+                title: "Numbers"
+            },
+            data: [{
+                type: "spline",
+                dataPoints: dataPoints1
+            }]
+        });
+        chart1.render();
 
         // Create a client instance
         client = new Paho.MQTT.Client("192.168.0.11", Number(9001),'clientID');
@@ -74,6 +96,7 @@
         }
 
         // called when a message arrives
+        let i = 0;
         function onMessageArrived(message) {
             let payload = message.payloadString;
             let json_obj = JSON.parse(payload);
@@ -84,8 +107,18 @@
             console.log("onMessageArrived:"+receivedNumber);
             
             // update chart
-            chart.options.data[0].dataPoints.push({y:receivedNumber,label:receivedTime})
-            chart.render()
+            chart.options.data[0].dataPoints.push({y:receivedNumber,label:receivedTime});
+            chart.render();
+
+            // update chart1
+            i++;
+            dataPoints1.push({x:i, y:receivedNumber,label:receivedTime});
+            if (dataPoints1.length > 10){
+                dataPoints1.shift();
+            }
+            
+            chart1.render();
+
 
         }
     }
@@ -93,5 +126,8 @@
 </head>
 <body>
 <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+</br></br>
+<div id="chartContainer1" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"> </script>
 </body>
 </html>
