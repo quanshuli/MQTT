@@ -1,5 +1,6 @@
 '''
-   using web socket to send numbers
+   - using paho.mqtt to send numbers through mosquitt.
+   - using websocket setting.
 '''
 import paho.mqtt.client as mqtt
 import random
