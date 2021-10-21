@@ -8,4 +8,5 @@ Requirements:
 - python3
 - paho-mqtt python package
 - cavasjs
+- paho-mqtt-js
 - mosquitto 
