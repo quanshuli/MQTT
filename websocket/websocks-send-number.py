@@ -1,6 +1,6 @@
 """   
-   - using paho.mqtt to send numbers through mosquitt.
-   - using websocket setting.
+   - Using paho.mqtt to send numbers through mosquitt.
+   - Using websocket setting.
 """
 
 import paho.mqtt.client as mqtt
@@ -9,45 +9,45 @@ import time
 from datetime import datetime, timezone
 import json 
 
-# websocket setting:
+# Websocket setting:
 broker = "192.168.0.11"
 port = 9001
 
-# mqtt setting:
+# Mqtt setting:
 #broker="127.0.0.1"
 #port=1883
 #port= 80
 
-# define the topic 
+# Define the topic 
 sub_topic = "test"
 
-#create client object
+# Create client object
 client= mqtt.Client("publish-socks", transport='websockets')       
 #client= paho.Client("publish-socks") # no websocket
 
-#establish connection
+# Establish connection
 client.connect(broker, port)           
 
-# continuously sending signals 
+# Continuously sending signals 
 while True:
-   # generate the random integer for sending
+   # Generate the random integer for sending
    rand_int = random.randint(1, 100)
    
-   # get the time when sending
+   # Get the time when sending
    now = datetime.utcnow().microsecond # utc time with microsecond only
    #now = datetime.now(timezone.utc).isoformat() # aware time object
    #now = datetime.utcnow().isoformat() # utc time
 
-   # serializing the message into json format
+   # Serializing the message into json format
    msg = json.dumps({'UTC_TIME_MICROSEC': now,
                      'NUMBER': rand_int})
 
-   # send out the message
+   # Send out the message
    client.publish(sub_topic, msg)    
 
    print('publishing: ', msg)
 
-   # set intervals
+   # Set intervals
    time.sleep(1)
 
 
