@@ -10,8 +10,8 @@ from datetime import datetime, timezone
 import json 
 
 # websocket setting:
-broker="192.168.0.11"
-port= 9001
+broker = "192.168.0.11"
+port = 9001
 
 # mqtt setting:
 #broker="127.0.0.1"
@@ -19,14 +19,14 @@ port= 9001
 #port= 80
 
 # define the topic 
-sub_topic="test"
+sub_topic = "test"
 
 #create client object
-client= mqtt.Client("publish-socks",transport='websockets')       
+client= mqtt.Client("publish-socks", transport='websockets')       
 #client= paho.Client("publish-socks") # no websocket
 
 #establish connection
-client.connect(broker,port)           
+client.connect(broker, port)           
 
 # continuously sending signals 
 while True:
@@ -43,7 +43,7 @@ while True:
                      'NUMBER': rand_int})
 
    # send out the message
-   client.publish(sub_topic,msg)    
+   client.publish(sub_topic, msg)    
 
    print('publishing: ', msg)
 
