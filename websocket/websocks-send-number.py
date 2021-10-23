@@ -22,7 +22,7 @@ port = 9001
 sub_topic = "test"
 
 # Create client object
-client= mqtt.Client("publish-socks", transport='websockets')       
+client = mqtt.Client("publish-socks", transport='websockets')       
 #client= paho.Client("publish-socks") # no websocket
 
 # Establish connection
@@ -34,7 +34,9 @@ while True:
    rand_int = random.randint(1, 100)
    
    # Get the time when sending
-   now = datetime.utcnow().microsecond # utc time with microsecond only
+   # Utc time with microsecond only
+   now = datetime.utcnow().microsecond 
+   
    #now = datetime.now(timezone.utc).isoformat() # aware time object
    #now = datetime.utcnow().isoformat() # utc time
 
