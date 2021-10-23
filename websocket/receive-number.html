@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-    use paho.mqtt.js to receive data from paho.mqtt python through mosquitto
+    Use paho.mqtt.js to receive data from paho.mqtt python through mosquitto
 -->
 <html>
 <head>
@@ -9,16 +9,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
 <script>
     //
-    // script to receive data
+    // Script to receive data
     //
 	
     window.onload = function() {
 
-        // define data points for chart
+        // Define data points for charts
         let dataPoints = [];
         let dataPoints1 = [];
 
-        // set up chart
+        // Set up history chart: chart
         var chart = new CanvasJS.Chart("chartContainer", {
             theme: "light2",
             title: {
@@ -39,7 +39,8 @@
             }]
         });
         chart.render();
-        // set up chart1
+
+        // Set up flow chart: chart1
         var chart1 = new CanvasJS.Chart("chartContainer1", {
             theme: "light2",
             title: {
@@ -65,37 +66,37 @@
         client = new Paho.MQTT.Client("192.168.0.11", Number(9001),'clientID');
         client.startTrace();
 
-        // set callback handlers
+        // Set callback handlers
         client.onConnectionLost = onConnectionLost;
         client.onMessageArrived = onMessageArrived;
 
-        // connect the client
+        // Connect the client
         client.connect({onSuccess:onConnect});
         console.log("attempting to connect...");
 
-        // called when the client connects
+        // Called when the client connects
         function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
         console.log("onConnect");
         client.subscribe("test");
         //
-        // test
+        // Test
         //
-        // self sending text:
+        // Self sending text:
         //message = new Paho.MQTT.Message("Hello");
         //message.destinationName = "World";
         // client.send(message);
         //
         }
 
-        // called when the client loses its connection
+        // Called when the client loses its connection
         function onConnectionLost(responseObject) {
         if (responseObject.errorCode !== 0) {
             console.log("onConnectionLost:"+responseObject.errorMessage);
         }
         }
 
-        // called when a message arrives
+        // Called when a message arrives
         let i = 0;
         function onMessageArrived(message) {
             let payload = message.payloadString;
@@ -103,14 +104,14 @@
             var receivedNumber = json_obj.NUMBER;
             var receivedTime = json_obj.UTC_TIME_MICROSEC;
 
-            // display received info 
+            // Display received info 
             console.log("onMessageArrived:"+receivedNumber);
             
-            // update chart
+            // Update history chart: chart
             chart.options.data[0].dataPoints.push({y:receivedNumber,label:receivedTime});
             chart.render();
 
-            // update chart1
+            // Update flow chart: chart1
             i++;
             dataPoints1.push({x:i, y:receivedNumber,label:receivedTime});
             if (dataPoints1.length > 10){
@@ -118,7 +119,6 @@
             }
             
             chart1.render();
-
 
         }
     }
