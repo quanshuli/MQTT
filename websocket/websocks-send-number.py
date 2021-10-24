@@ -1,5 +1,5 @@
 """   
-   - Using paho.mqtt to send numbers through mosquitt.
+   - Using paho.mqtt to send numbers through mosquitto.
    - Using websocket setting.
 """
 
